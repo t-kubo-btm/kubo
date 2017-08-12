@@ -153,7 +153,7 @@
             <td><?php //登録者
                    echo $this->Form->input('create_user',
                                           ['type' => 'select',
-                                           'options' => $create_users,
+                                           'options' => $new_users,
                                            'id' => "create_user",
                                            'class' => 'class_name',
                                            'empty' => true,

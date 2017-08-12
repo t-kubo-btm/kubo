@@ -54,19 +54,24 @@ class ShopInfoController extends AppController
      */
     public function add()
     {
+          $create_user = TableRegistry::get('UserMaster');
+          $create_users = $create_user->find();
+          $users = $create_users->select(['user_name'])
+                     ->where(['effect_flg' => 1])
+                     ->order(['user_name' => 'ASC'])
+                     ->toArray();
+          $new_users=[];
+          foreach($users as $key => $value){
+            $new_users = $new_users + ["value"=>$value['user_name'], "text" =>$value['user_name']];
+          }
+          $this->log($new_users, "debug");
+
+          $this->set(compact('new_users'));
+          $this->set('_serialize',['new_users']);
+
         // オブジェクトを作成
         $shopInfo = $this->ShopInfo->newEntity();
         if ($this->request->is('post')) {
-        $create_users = $this->ShopInfo->find();
-        $create_users->select(['create_user'])
-                     ->distinct(['create_user'])
-                    // ->where(['effect_flg' => 1])
-                     ->order(['create_user' => 'ASC']);;
-        $this->set('create_users',$create_users);
-       // $this->set(compact('create_users'));
-       // $this->set('_serialize',['create_users']);
-       // $this->log($create_users, 'debug');
-
             $shopInfoForm = new ShopInfoForm();
             $shopInfoForm->validate($this->request->data());
 
