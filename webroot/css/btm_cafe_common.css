@@ -1,0 +1,61 @@
+@charset "utf-8";
+body {
+  background: #ffffff; //白
+  font-family: Meiryo;
+  font-size: 100%;
+}
+table.registration{
+  border: 2px #808080 solid;
+  rules: none;
+}
+#error_msg{
+  color: #ff0000;
+  font-size: 80%;
+}
+#topline-none{
+  border-top-style:none;
+}
+#downline-none{
+  border-down-style:none;
+}
+#topdownline-none{
+  border-top-style:none;
+  border-down-style:none;
+}
+
+
+/*  画面サイズが480pxからはここを読み込む  */
+@media screen and (min-width:480px) { 
+
+  #error_msg{
+    color: #00ffff;
+  }
+}
+
+/*  画面サイズが768pxから1024pxまではここを読み込む  */
+@media screen and (min-width:768px) and ( max-width:1024px) {
+  #error_msg{
+    color: #db7093;
+  }
+}
+
+/*  画面サイズが1024pxからはここを読み込む  */
+@media screen and (min-width:1024px) {
+  #error_msg{
+    color: #9acd32;
+  }
+
+}
+
+/*  横向きの場合  */
+@media screen and (orientation:landscape){
+  .picture {
+	  display:block;
+	  margin:1.2em 0;
+	  width:100%;
+ }
+ .picture img {
+	 width:100%;
+	 max-width:100%;
+	 height:auto;
+}
