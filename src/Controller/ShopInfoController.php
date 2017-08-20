@@ -48,6 +48,30 @@ class ShopInfoController extends AppController
     }
 
     /**
+     * Search method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function search()
+    {
+        $this->paginate = [];
+        $shopInfo = $this->paginate($this->ShopInfo);
+
+        $this->set(compact('shopInfo'));
+        $this->set('_serialize', ['shopInfo']);
+
+
+
+
+
+
+
+
+
+
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
@@ -62,7 +86,7 @@ class ShopInfoController extends AppController
                      ->toArray();
           $new_users=[];
           foreach($users as $key => $value){
-            $new_users = $new_users + ["value"=>$value['user_name'], "text" =>$value['user_name']];
+            $new_users = $new_users + [$value['user_name'] => $value['user_name']];
           }
           $this->log($new_users, "debug");
 
