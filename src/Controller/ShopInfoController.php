@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\I18n\Time;
 use App\Form\ShopInfoForm;
 use Cake\ORM\TableRegistry;
+use Exception;
 
 /**
  * ShopInfo Controller
@@ -90,6 +91,26 @@ class ShopInfoController extends AppController
         $shopInfo = $this->paginate($this->ShopInfo);
         $this->set(compact('shopInfo'));
         $this->set('_serialize', ['shopInfo']);
+
+        /************/
+        /*   検索   */
+        /************/
+        if ($this->request->is('post')) {
+          if (array_key_exists('search', $this->request->data())) {
+//$this->log('----- search -----','debug');
+             //検索処理
+            $search_info = $this->ShopInfo->find();
+            $search_result = $search_info
+                 ->where(['closest_station' => $this->request->getData('closest_station')])
+                 ->where(['shop_name like ' => '%' . $this->request->getData('shop_name') . '%'])
+                 ->toArray();
+
+            $this->set(compact('search_result'));
+            $this->set('_serialize', ['search_result']);
+         } else {
+             // 削除処理
+         }
+      }
 
     }
 

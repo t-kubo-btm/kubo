@@ -19,7 +19,7 @@
       </ul>
   </nav>
   <div class="shopInfo form large-9 medium-8 columns content">
-    <?= $this->Form->create($shopInfo) ?>
+    <?= $this->Form->create("", ['controller' => 'ShopInfo', 'url' => '/ShopInfo/search', 'type' => 'post']) ?>
     <fieldset>
       <legend><?= __('検索') ?></legend>
    <div id="regist"> 
@@ -80,20 +80,26 @@
           </td>
         </tr>
         <tr>
-          <td><?= $this->Form->button(__('検索')) ?></td>
+          <td><?= $this->Form->button(__('検索'), ['name' => 'search']) ?></td>
         </tr>
      </table>
   </div>
   <div id="search">
-    <p>検索結果：<?php echo $shopInfo->count();  ?>件</p>
+    <p>検索結果：
+       <?php if(!Empty($search_result)){ ?>
+       <?php echo count($search_result);  ?>件
+       <?php }else{ ?>
+       0件
+       <?php } ?>
+    </p>
     <table class="search">
-    <?php foreach ($shopInfo as $shopInfo): ?>
+    <?php foreach ($search_result as $shopInfo): ?>
 
       <tr>
         <td rowspan="5" class="center">
           <div class="checkbox">
             <label for="categories-aaa" class="selected">
-              <input type="checkbox" name="categories[]" value="aaa" id="categories-aaa">
+              <input type="checkbox" name="categories[]" value="" id="delchk_<?php echo $shopInfo['shop_id'] ;?>">
             </label>
           </div></td>
         <td colspan="6">
