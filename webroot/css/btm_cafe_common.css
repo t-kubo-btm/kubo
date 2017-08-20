@@ -4,23 +4,49 @@ body {
   font-family: Meiryo;
   font-size: 100%;
 }
-table.registration{
-  border: 2px #808080 solid;
-  rules: none;
+
+/* テーブル共通設定 */
+table{
+/*  border: 2px #808080 solid; */
+/*  rules: none; */
+  width: 100%;
+  margin-bottom: 20px;
+  border: 4px #808080 solid; //外枠表示
 }
+
+/* 登録内容入力テーブル */
+table.registration{
+}
+
+table.registration tr{
+  border-bottom: none;
+}
+
+#regist td, th {
+  border-width: 0; 
+}
+
+/* 検索結果表示テーブル */
+table.search{
+  border-collapse: collapse;
+}
+#search td, th {
+  border: 3px #808080 solid;
+}
+
+/* テーブルタイトル */
+.table_title{
+  background-color: #FFB6C1; //LightPink
+}
+/* 中央揃え */
+.center{
+  text-align: center;
+}
+
+/* エラーメッセージ */
 #error_msg{
   color: #ff0000;
   font-size: 80%;
-}
-#topline-none{
-  border-top-style:none;
-}
-#downline-none{
-  border-down-style:none;
-}
-#topdownline-none{
-  border-top-style:none;
-  border-down-style:none;
 }
 
 
