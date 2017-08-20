@@ -54,20 +54,42 @@ class ShopInfoController extends AppController
      */
     public function search()
     {
+       /************/
+       /* 初期表示 */
+       /************/
+        $shop_info = $this->ShopInfo->find();
+
+        /* 最寄駅 */
+        $closest_station = $shop_info->select(['closest_station'])
+                   ->distinct(['closest_station'])
+                   ->order(['closest_station' => 'ASC'])
+                   ->toArray();
+        $arr_closest_station=[];
+        foreach($closest_station as $key => $value){
+          $arr_closest_station = $arr_closest_station
+                  + [$value['closest_station'] => $value['closest_station']];
+        }
+        $this->set(compact('arr_closest_station'));
+        $this->set('_serialize',['arr_closest_station']);
+
+        /* 登録者 */
+        $create_user = $shop_info->select(['create_user'])
+                   ->distinct(['create_user'])
+                   ->order(['create_user' => 'ASC'])
+                   ->toArray();
+        $arr_create_user=[];
+        foreach($create_user as $key => $value){
+          $arr_create_user = $arr_create_user
+                  + [$value['create_user'] => $value['create_user']];
+        }
+        $this->set(compact('arr_create_user'));
+        $this->set('_serialize',['arr_create_user']);
+
+
         $this->paginate = [];
         $shopInfo = $this->paginate($this->ShopInfo);
-
         $this->set(compact('shopInfo'));
         $this->set('_serialize', ['shopInfo']);
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -78,20 +100,20 @@ class ShopInfoController extends AppController
      */
     public function add()
     {
-          $create_user = TableRegistry::get('UserMaster');
-          $create_users = $create_user->find();
-          $users = $create_users->select(['user_name'])
-                     ->where(['effect_flg' => 1])
-                     ->order(['user_name' => 'ASC'])
-                     ->toArray();
-          $new_users=[];
-          foreach($users as $key => $value){
-            $new_users = $new_users + [$value['user_name'] => $value['user_name']];
-          }
-          $this->log($new_users, "debug");
+        $create_user = TableRegistry::get('UserMaster');
+        $create_users = $create_user->find();
+        $users = $create_users->select(['user_name'])
+                   ->where(['effect_flg' => 1])
+                   ->order(['user_name' => 'ASC'])
+                   ->toArray();
 
-          $this->set(compact('new_users'));
-          $this->set('_serialize',['new_users']);
+        $new_users=[];
+        foreach($users as $key => $value){
+          $new_users = $new_users + [$value['user_name'] => $value['user_name']];
+        }
+        $this->log($new_users, "debug");
+        $this->set(compact('new_users'));
+        $this->set('_serialize',['new_users']);
 
         // オブジェクトを作成
         $shopInfo = $this->ShopInfo->newEntity();
