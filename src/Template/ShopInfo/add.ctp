@@ -24,14 +24,16 @@
       <legend><?= __('登録') ?></legend>
         <table class="registration">
           <tr>
-            <td><?php //店名
-                   echo $this->Form->input('shop_name', ['label'=>'店名']);
+            <td id='required'><?= __('店名') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td><?php
+                   echo $this->Form->input('shop_name',['label' => false]);
                  ?></td>
           </tr>
           <?php
             if(!Empty($errors['shop_name']['length'])){
           ?>
           <tr>
+            <td><td>
             <td id='error_msg'><?php
                    echo $errors['shop_name']['length'];
                 ?></td>
@@ -40,14 +42,16 @@
             }
           ?>
           <tr>
-            <td><?php  //URL
-                   echo $this->Form->input('shop_url', ['label'=>'URL']);
+            <td><?= __('URL') ?><td>
+            <td><?php
+                   echo $this->Form->input('shop_url',['label' => false]);
                  ?></td>
           </tr>
           <?php
             if(!Empty($errors['shop_url']['length'])){
           ?>
           <tr>
+            <td><td>
             <td id='error_msg'><?php 
                    echo $errors['shop_url']['length'];
                  ?></td>
@@ -59,6 +63,7 @@
             if(!Empty($errors['shop_url']['format'])){
           ?>
           <tr>
+            <td><td>
             <td id='error_msg'><?php
                    echo $errors['shop_url']['format'];
                  ?></td>
@@ -67,14 +72,16 @@
             }
           ?>
           <tr>
-            <td><?php  //最寄駅
-                   echo $this->Form->input('closest_station', ['label'=>'最寄駅']);
+            <td id='required'><?= __('最寄駅') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td><?php
+                   echo $this->Form->input('closest_station', ['label'=>false]);
                   ?></td>
           </tr>
           <?php
             if(!Empty($errors['closest_station']['length'])){
           ?>
           <tr>
+            <td><?= __('') ?><td>
             <td id='error_msg'><?php
                   echo $errors['closest_station']['length'];
                  ?></td>
@@ -83,14 +90,16 @@
             }
           ?>
           <tr>
+            <td id='required'><?= __('徒歩') ?><span id='required_mark'><?= __('*') ?></span><td>
             <td><?php //徒歩
-                   echo $this->Form->input('waik_time', ['label'=>'徒歩']);
+                   echo $this->Form->input('waik_time', ['label'=>false]);
                  ?></td>
           </tr>
           <?php
             if(!Empty($errors['waik_time']['format'])){
           ?>
           <tr>
+            <td><td>
             <td id='error_msg'><?php
                      echo $errors['waik_time']['format'];
                 ?></td>
@@ -102,6 +111,7 @@
             if(!Empty($errors['waik_time']['range'])){
           ?>
           <tr>
+            <td><td>
             <td id='error_msg'><?php
                   echo $errors['waik_time']['range'];
                 ?></td>
@@ -110,17 +120,20 @@
             }
           ?>
           <tr>
-            <td><?php  //営業時間（開始）
-                   echo $this->Form->input('business_hours_from', ['label'=>'営業時間（開始）']);
+            <td id='required'><?= __('営業時間（開始）') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td><?php
+                   echo $this->Form->input('business_hours_from', ['label'=>false]);
                 ?></td>
           </tr>
           <tr>
-            <td><?php  //営業時間（終了）
-                   echo $this->Form->input('business_hours_to', ['label'=>'営業時間（終了）']);
+            <td id='required'><?= __('営業時間（終了）') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td><?php
+                   echo $this->Form->input('business_hours_to', ['label'=>false]);
                  ?></td>
           </tr>
           <tr>
-            <td><?= __('WiFi有無') ?><?php  //WiFi有無
+            <td id='required'><?= __('WiFi有無') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td><?php
                    echo $this->Form->radio('wifi_cd',
                          [['value' => '1', 'text' => 'あり', 'checked' => 'true'],
                           ['value' => '0', 'text' => 'なし'],
@@ -129,7 +142,8 @@
                 ?></td>
           </tr>
           <tr>
-            <td><?= __('電源有無') ?><?php  //電源有無
+            <td id='required'><?= __('電源有無') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td><?php
                    echo $this->Form->radio('power_supply_cd',
                               [['value' => '1', 'text' => 'あり', 'checked' => 'true'],
                                ['value' => '0', 'text' => 'なし',],
@@ -138,11 +152,13 @@
                  ?></td>
           </tr>
           <tr>
+            <td><?= __('memo') ?><td>
             <td><?php //メモ
-                   echo $this->Form->input('memo', ['label'=>'memo']);
+                   echo $this->Form->input('memo', ['label'=>false]);
                 ?></td>
           </tr>
           <tr>
+            <td><td>
             <td id='error_msg'><?php //メモ
                    if(!Empty($errors['memo']['length'])){
                      echo $errors['memo']['length'];
@@ -150,15 +166,16 @@
                 ?></td>
           </tr>
           <tr>
-            <td><?php //登録者
+            <td id='required'><?= __('登録者') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td><?php
                    echo $this->Form->input('create_user',
                                           ['type' => 'select',
                                            'options' => $new_users,
                                            'id' => "create_user",
                                            'class' => 'class_name',
                                            'empty' => true,
-                                          // 'default' => '-',
-                                           'label' => '登録者']);
+                                           'default' => '-',
+                                           'label' => false]);
                ?></td>
           </tr>
         </table>

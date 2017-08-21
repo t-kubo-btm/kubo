@@ -25,7 +25,8 @@
    <div id="regist"> 
      <table class="registration">
         <tr>
-          <td><?= __('WiFi有無') ?><?php  //WiFi有無
+          <td><?= __('WiFi有無') ?><td>
+          <td><?php
 
                  echo $this->Form->multiCheckbox('wifi_cd',
                        [
@@ -35,7 +36,8 @@
               ?></td>
         </tr>
         <tr>
-          <td><?= __('電源有無') ?><?php  //電源有無
+          <td><?= __('電源有無') ?><td>
+          <td><?php
                  echo $this->Form->multiCheckbox('power_supply_cd',
                        [
                          ['value' => '1', 'text' => 'あり'],
@@ -44,7 +46,8 @@
                ?></td>
         </tr>
         <tr>
-          <td><?php  //最寄駅
+          <td><?= __('最寄駅') ?><td>
+          <td><?php
                    echo $this->Form->input('create_user',
                                           ['type' => 'select',
                                            'options' => $arr_closest_station,
@@ -52,17 +55,19 @@
                                            'class' => 'closest_station',
                                            'empty' => true,
                                            'default' => '-',
-                                           'label' => '最寄駅']);
+                                           ]);
                 ?></td>
         </tr>
         <tr>
-          <td><?php //徒歩
-                   echo $this->Form->input('waik_time', ['label'=>'徒歩']);
+          <td><?= __('徒歩') ?><td>
+          <td><?php
+                   echo $this->Form->input('waik_time');
                  ?>分
           </td>
         </tr>
         <tr>
-          <td><?php  //登録者
+          <td><?= __('登録者') ?><td>
+          <td><?php
                    echo $this->Form->input('create_user',
                                           ['type' => 'select',
                                            'options' => $arr_create_user,
@@ -70,17 +75,18 @@
                                            'class' => 'class_name',
                                            'empty' => true,
                                            'default' => '-',
-                                           'label' => '登録者']);
+                                           ]);
                 ?></td>
         </tr>
         <tr>
-          <td><?php //店名
-                   echo $this->Form->input('shop_name', ['label'=>'店名']);
+          <td><?= __('店名') ?><td>
+          <td><?php
+                   echo $this->Form->input('shop_name');
                  ?>
           </td>
         </tr>
         <tr>
-          <td><?= $this->Form->button(__('検索'), ['name' => 'search']) ?></td>
+          <td colspan="3"><?= $this->Form->button(__('検索'), ['name' => 'search']) ?></td>
         </tr>
      </table>
   </div>

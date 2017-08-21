@@ -159,18 +159,21 @@ class ShopInfoController extends AppController
 
                 // DBに保存
                 if ($this->ShopInfo->save($patch_shopInfo)) {
-                    $this->Flash->success(__('The shop info has been saved.'));
+                    $this->Flash->success(__('店舗情報を登録しました'));
 
-                    return $this->redirect(['action' => 'index']);
-                }             
+                    return $this->redirect(['action' => 'add']);
+                }else{
+                    $this->Flash->error(__('予期せぬエラーが発生しました。管理者へお問い合わせください'));
+                }
+            }else{
+              // バリデーションチェックエラー時
+              $errors = $shopInfoForm->errors();
+              $this->set(compact('errors'));
+              $this->set('_serialize', ['errors']);
+
+              // DB保存エラー時のreturn文
+              $this->Flash->error(__('The shop info could not be saved. Please, try again.'));
             }
-            // バリデーションチェックエラーを設定
-            $errors = $shopInfoForm->errors();
-            $this->set(compact('errors'));
-            $this->set('_serialize', ['errors']);
-
-            // DB保存エラー時のreturn文
-            $this->Flash->error(__('The shop info could not be saved. Please, try again.'));
         }
         $this->set(compact('shopInfo', 'shops'));
         $this->set('_serialize', ['shopInfo']);

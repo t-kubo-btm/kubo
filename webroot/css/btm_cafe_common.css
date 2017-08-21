@@ -43,6 +43,16 @@ table.search{
   text-align: center;
 }
 
+/* 必須入力項目名 */
+#required{
+  font-weight:bold;
+}
+
+/* 必須入力マーク */
+#required_mark{
+  color: #ff0000;
+}
+
 /* エラーメッセージ */
 #error_msg{
   color: #ff0000;
