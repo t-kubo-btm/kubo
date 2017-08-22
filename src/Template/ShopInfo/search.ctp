@@ -48,20 +48,21 @@
         <tr>
           <td><?= __('最寄駅') ?><td>
           <td><?php
-                   echo $this->Form->input('create_user',
+                   echo $this->Form->input('closest_station',
                                           ['type' => 'select',
                                            'options' => $arr_closest_station,
                                            'id' => "closest_station",
                                            'class' => 'closest_station',
                                            'empty' => true,
                                            'default' => '-',
+                                           'label' => false,
                                            ]);
                 ?></td>
         </tr>
         <tr>
           <td><?= __('徒歩') ?><td>
           <td><?php
-                   echo $this->Form->input('waik_time');
+                   echo $this->Form->input('waik_time', ['label' => false]);
                  ?>分
           </td>
         </tr>
@@ -75,13 +76,14 @@
                                            'class' => 'class_name',
                                            'empty' => true,
                                            'default' => '-',
+                                           'label' => false,
                                            ]);
                 ?></td>
         </tr>
         <tr>
           <td><?= __('店名') ?><td>
           <td><?php
-                   echo $this->Form->input('shop_name');
+                   echo $this->Form->input('shop_name', ['label' => false]);
                  ?>
           </td>
         </tr>
@@ -128,9 +130,9 @@
         <td class="center"><?= h($shopInfo->closest_station) ?></td>
         <td class="center"><?= $this->Number->format($shopInfo->waik_time) ?>分</td>
         <!-- <td class="center"><?= $this->Time->format($shopInfo->business_hours_from) ?> -->
-        <td class="center"><?= date("H:i:s", strtotime($shopInfo->business_hours_from)) ?>
+        <td class="center"><?= date("H:i", strtotime($shopInfo->business_hours_from)) ?>
                             -
-                           <?= $this->Time->format($shopInfo->business_hours_to) ?></td>
+                           <?= date("H:i", strtotime($shopInfo->business_hours_to)) ?></td>
         <td class="center">
           <?php if($this->Number->format($shopInfo->wifi_cd) == 1): ?>
             ○

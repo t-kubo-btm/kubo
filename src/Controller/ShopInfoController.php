@@ -86,25 +86,62 @@ class ShopInfoController extends AppController
         $this->set(compact('arr_create_user'));
         $this->set('_serialize',['arr_create_user']);
 
-
+/*
         $this->paginate = [];
         $shopInfo = $this->paginate($this->ShopInfo);
         $this->set(compact('shopInfo'));
         $this->set('_serialize', ['shopInfo']);
-
+*/
         /************/
         /*   検索   */
         /************/
         if ($this->request->is('post')) {
           if (array_key_exists('search', $this->request->data())) {
-//$this->log('----- search -----','debug');
-             //検索処理
-            $search_info = $this->ShopInfo->find();
-            $search_result = $search_info
-                 ->where(['closest_station' => $this->request->getData('closest_station')])
-                 ->where(['shop_name like ' => '%' . $this->request->getData('shop_name') . '%'])
-                 ->toArray();
+$this->log('----------','debug');
+$this->log($this->request->data(),'debug');
+            $searchInfo = $this->ShopInfo->find();
 
+            /* 検索条件を設定 */
+            $conditions = [];
+/*
+            // WiFi
+           if (!empty($this->request->getData('wifi_cd'))) {
+              //あり
+              if (!empty($this->request->getData('wifi_cd')[0])) {
+                $conditions['wifi_cd in'] = $this->request->getData('wifi_cd')[0];
+              }
+              //なし
+              if (!empty($this->request->getData('wifi_cd')[1])) {
+                $conditions['wifi_cd in'] = $this->request->getData('wifi_cd')[1];
+              }
+            } 
+*/
+            // 最寄駅
+            if (!empty($this->request->getData('closest_station'))) {
+              $conditions['closest_station'] = $this->request->getData('closest_station');
+            }
+            // 徒歩
+            if (!empty($this->request->getData('wail_time'))) {
+              $conditions['waik_time <= '] = $this->request->getData('waik_time');
+            }
+            // 登録者
+            if (!empty($this->request->getData('create_user'))) {
+              $conditions['create_user'] = $this->request->getData('create_user');
+            }
+            // 店名
+            if (!empty($this->request->getData('shop_name'))) {
+              $conditions['shop_name like'] = '%' . $this->request->getData('shop_name') . '%';
+            }
+
+            /* 検索 */
+            if(!empty($conditions)){
+              //検索条件が指定された場合
+              $search_result = $searchInfo
+                     ->where($conditions)
+                   ->toArray();
+            } else {
+              $search_result = $searchInfo;
+            }
             $this->set(compact('search_result'));
             $this->set('_serialize', ['search_result']);
          } else {
