@@ -228,7 +228,7 @@ $this->log('チェック2つ','debug');
         $this->set(compact('shopInfo', 'shops'));
         $this->set('_serialize', ['shopInfo']);
         // 検索画面を再表示
-        return $this->redirect(['action' => 'add']);
+//        return $this->redirect(['action' => 'add']);
     }
 
     /**
