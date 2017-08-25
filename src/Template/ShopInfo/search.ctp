@@ -25,18 +25,17 @@
    <div id="regist"> 
      <table class="registration">
         <tr>
-          <td><?= __('WiFi有無') ?><td>
-          <td><?php
-
+          <td><?= __('WiFi有無') ?></td>
+          <td><nobr><?php
                  echo $this->Form->multiCheckbox('wifi_cd',
                        [
                          ['value' => '1', 'text' => 'あり'], 
                          ['value' => '0', 'text' => 'なし'],
                        ]);
-              ?></td>
+              ?></nobr></td>
         </tr>
         <tr>
-          <td><?= __('電源有無') ?><td>
+          <td><?= __('電源有無') ?></td>
           <td><?php
                  echo $this->Form->multiCheckbox('power_supply_cd',
                        [
@@ -46,7 +45,7 @@
                ?></td>
         </tr>
         <tr>
-          <td><?= __('最寄駅') ?><td>
+          <td><?= __('最寄駅') ?></td>
           <td><?php
                    echo $this->Form->input('closest_station',
                                           ['type' => 'select',
@@ -60,14 +59,14 @@
                 ?></td>
         </tr>
         <tr>
-          <td><?= __('徒歩') ?><td>
+          <td><?= __('徒歩') ?></td>
           <td><?php
                    echo $this->Form->input('waik_time', ['label' => false]);
                  ?>分
           </td>
         </tr>
         <tr>
-          <td><?= __('登録者') ?><td>
+          <td><?= __('登録者') ?></td>
           <td><?php
                    echo $this->Form->input('create_user',
                                           ['type' => 'select',
@@ -81,25 +80,24 @@
                 ?></td>
         </tr>
         <tr>
-          <td><?= __('店名') ?><td>
+          <td><?= __('店名') ?></td>
           <td><?php
                    echo $this->Form->input('shop_name', ['label' => false]);
                  ?>
           </td>
         </tr>
         <tr>
-          <td colspan="3"><?= $this->Form->button(__('検索'), ['name' => 'search']) ?></td>
+          <td colspan="2"><?= $this->Form->button(__('検索'), ['name' => 'search']) ?></td>
         </tr>
      </table>
   </div>
   <div id="search">
-    <p>検索結果：
+    <p>
        <?php if(!Empty($search_result)){ ?>
-       <?php echo count($search_result);  ?>件
-       <?php }else{ ?>
-       0件
+       検索結果：<?php echo count($search_result);  ?>件
        <?php } ?>
     </p>
+    <?php if(!Empty($search_result)){ ?>
     <table class="search">
     <?php foreach ($search_result as $shopInfo): ?>
 
@@ -161,6 +159,7 @@
       </tr>
     <?php endforeach; ?>
     </table>
+    <?php } ?>
 </div>
 
 

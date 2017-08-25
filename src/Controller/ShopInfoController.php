@@ -58,9 +58,8 @@ class ShopInfoController extends AppController
        /************/
        /* 初期表示 */
        /************/
-        $shop_info = $this->ShopInfo->find();
-
         /* 最寄駅 */
+        $shop_info = $this->ShopInfo->find();
         $closest_station = $shop_info->select(['closest_station'])
                    ->distinct(['closest_station'])
                    ->order(['closest_station' => 'ASC'])
@@ -74,12 +73,13 @@ class ShopInfoController extends AppController
         $this->set('_serialize',['arr_closest_station']);
 
         /* 登録者 */
-        $create_user = $shop_info->select(['create_user'])
-                   ->distinct(['create_user'])
-                   ->order(['create_user' => 'ASC'])
-                   ->toArray();
+        $create_user  = $this->ShopInfo->find();
+        $create_users = $create_user->select(['create_user'])
+                         ->distinct(['create_user'])
+                         ->order(['create_user' => 'ASC'])
+                         ->toArray();
         $arr_create_user=[];
-        foreach($create_user as $key => $value){
+        foreach($create_users as $key => $value){
           $arr_create_user = $arr_create_user
                   + [$value['create_user'] => $value['create_user']];
         }
@@ -99,23 +99,32 @@ class ShopInfoController extends AppController
           if (array_key_exists('search', $this->request->data())) {
 $this->log('----------','debug');
 $this->log($this->request->data(),'debug');
+$this->log($this->request->getData('wifi_cd'),'debug');
+//$this->log($this->request->getData('wifi_cd')[0],'debug');
+//$this->log($this->request->getData('wifi_cd')[1],'debug');
             $searchInfo = $this->ShopInfo->find();
 
             /* 検索条件を設定 */
             $conditions = [];
-/*
             // WiFi
            if (!empty($this->request->getData('wifi_cd'))) {
-              //あり
-              if (!empty($this->request->getData('wifi_cd')[0])) {
-                $conditions['wifi_cd in'] = $this->request->getData('wifi_cd')[0];
+              // チェックが1つ
+              if (!empty($this->request->getData('wifi_cd')[0])
+                  and
+                   empty($this->request->getData('wifi_cd')[1])) {
+                $conditions['wifi_cd'] = $this->request->getData('wifi_cd')[0];
+$this->log('チェック1つ','debug');
               }
-              //なし
-              if (!empty($this->request->getData('wifi_cd')[1])) {
-                $conditions['wifi_cd in'] = $this->request->getData('wifi_cd')[1];
+              // チェックが2つ
+              if (!empty($this->request->getData('wifi_cd')[0])
+                  and
+                  !empty($this->request->getData('wifi_cd')[1])) {
+                $conditions['wifi_cd in '] = $this->request->getData('wifi_cd')[0]
+                                             . ',' .
+                                             $this->request->getData('wifi_cd')[1];
+$this->log('チェック2つ','debug');
               }
             } 
-*/
             // 最寄駅
             if (!empty($this->request->getData('closest_station'))) {
               $conditions['closest_station'] = $this->request->getData('closest_station');
@@ -132,7 +141,6 @@ $this->log($this->request->data(),'debug');
             if (!empty($this->request->getData('shop_name'))) {
               $conditions['shop_name like'] = '%' . $this->request->getData('shop_name') . '%';
             }
-
             /* 検索 */
             if(!empty($conditions)){
               //検索条件が指定された場合
@@ -195,12 +203,17 @@ $this->log($this->request->data(),'debug');
                 $patch_shopInfo = $this->ShopInfo->patchEntity($shopInfo, $shop_info_condition);
 
                 // DBに保存
-                if ($this->ShopInfo->save($patch_shopInfo)) {
-                    $this->Flash->success(__('店舗情報を登録しました'));
-
-                    return $this->redirect(['action' => 'add']);
-                }else{
-                    $this->Flash->error(__('予期せぬエラーが発生しました。管理者へお問い合わせください'));
+                try{
+                  if ($this->ShopInfo->save($patch_shopInfo)) {
+                      $this->Flash->success(__('店舗情報を登録しました'));
+                      // 検索画面を再表示
+                      return $this->redirect(['action' => 'add']);
+                  }else{
+                      $this->Flash->error(__('予期せぬエラーが発生しました。管理者へお問い合わせください'));
+                  }
+                } catch(Exception $e){
+                  // DB保存エラー時のreturn文
+                  $this->Flash->error(__('予期せぬエラーが発生しました。管理者へお問い合わせください'));
                 }
             }else{
               // バリデーションチェックエラー時
@@ -214,6 +227,8 @@ $this->log($this->request->data(),'debug');
         }
         $this->set(compact('shopInfo', 'shops'));
         $this->set('_serialize', ['shopInfo']);
+        // 検索画面を再表示
+        return $this->redirect(['action' => 'add']);
     }
 
     /**

@@ -24,7 +24,7 @@
       <legend><?= __('登録') ?></legend>
         <table class="registration">
           <tr>
-            <td id='required'><?= __('店名') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('店名') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->input('shop_name',['label' => false]);
                  ?></td>
@@ -33,7 +33,7 @@
             if(!Empty($errors['shop_name']['length'])){
           ?>
           <tr>
-            <td><td>
+            <td></td>
             <td id='error_msg'><?php
                    echo $errors['shop_name']['length'];
                 ?></td>
@@ -42,7 +42,7 @@
             }
           ?>
           <tr>
-            <td><?= __('URL') ?><td>
+            <td><?= __('URL') ?></td>
             <td><?php
                    echo $this->Form->input('shop_url',['label' => false]);
                  ?></td>
@@ -51,7 +51,7 @@
             if(!Empty($errors['shop_url']['length'])){
           ?>
           <tr>
-            <td><td>
+            <td></td>
             <td id='error_msg'><?php 
                    echo $errors['shop_url']['length'];
                  ?></td>
@@ -63,7 +63,7 @@
             if(!Empty($errors['shop_url']['format'])){
           ?>
           <tr>
-            <td><td>
+            <td></td>
             <td id='error_msg'><?php
                    echo $errors['shop_url']['format'];
                  ?></td>
@@ -72,7 +72,7 @@
             }
           ?>
           <tr>
-            <td id='required'><?= __('最寄駅') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('最寄駅') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->input('closest_station', ['label'=>false]);
                   ?></td>
@@ -81,7 +81,7 @@
             if(!Empty($errors['closest_station']['length'])){
           ?>
           <tr>
-            <td><?= __('') ?><td>
+            <td><?= __('') ?></td>
             <td id='error_msg'><?php
                   echo $errors['closest_station']['length'];
                  ?></td>
@@ -90,7 +90,7 @@
             }
           ?>
           <tr>
-            <td id='required'><?= __('徒歩') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('徒歩') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php //徒歩
                    echo $this->Form->input('waik_time', ['label'=>false]);
                  ?></td>
@@ -99,7 +99,7 @@
             if(!Empty($errors['waik_time']['format'])){
           ?>
           <tr>
-            <td><td>
+            <td></td>
             <td id='error_msg'><?php
                      echo $errors['waik_time']['format'];
                 ?></td>
@@ -111,7 +111,7 @@
             if(!Empty($errors['waik_time']['range'])){
           ?>
           <tr>
-            <td><td>
+            <td></td>
             <td id='error_msg'><?php
                   echo $errors['waik_time']['range'];
                 ?></td>
@@ -120,19 +120,19 @@
             }
           ?>
           <tr>
-            <td id='required'><?= __('営業時間（開始）') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('営業時間（開始）') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->input('business_hours_from', ['label'=>false]);
                 ?></td>
           </tr>
           <tr>
-            <td id='required'><?= __('営業時間（終了）') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('営業時間（終了）') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->input('business_hours_to', ['label'=>false]);
                  ?></td>
           </tr>
           <tr>
-            <td id='required'><?= __('WiFi有無') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('WiFi有無') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->radio('wifi_cd',
                          [['value' => '1', 'text' => 'あり', 'checked' => 'true'],
@@ -142,23 +142,24 @@
                 ?></td>
           </tr>
           <tr>
-            <td id='required'><?= __('電源有無') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('電源有無') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->radio('power_supply_cd',
-                              [['value' => '1', 'text' => 'あり', 'checked' => 'true'],
+                              [['value' => '1', 'text' => 'あり', 'checked' => 'true',],
                                ['value' => '0', 'text' => 'なし',],
                                ['value' => '9', 'text' => '不明',],
-                              ]);
+                              ],
+                              ['separator' => '<br>']);
                  ?></td>
           </tr>
           <tr>
-            <td><?= __('memo') ?><td>
+            <td><?= __('memo') ?></td>
             <td><?php //メモ
                    echo $this->Form->input('memo', ['label'=>false]);
                 ?></td>
           </tr>
           <tr>
-            <td><td>
+            <td></td>
             <td id='error_msg'><?php //メモ
                    if(!Empty($errors['memo']['length'])){
                      echo $errors['memo']['length'];
@@ -166,7 +167,7 @@
                 ?></td>
           </tr>
           <tr>
-            <td id='required'><?= __('登録者') ?><span id='required_mark'><?= __('*') ?></span><td>
+            <td id='required'><?= __('登録者') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->input('create_user',
                                           ['type' => 'select',
