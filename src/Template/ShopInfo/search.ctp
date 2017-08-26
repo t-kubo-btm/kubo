@@ -25,15 +25,25 @@
    <div id="regist"> 
      <table class="registration">
         <tr>
+          <td>WiFi</td>
+          <td><p>
+<input type="checkbox" name="wifi_cd" value=“1”>あり
+<input type="checkbox" name="wifi_cd" value=“0”>なし
+<p>
+          </td>
+        </tr>
+<!--
+        <tr>
           <td><?= __('WiFi有無') ?></td>
-          <td><nobr><?php
+          <td><?php
                  echo $this->Form->multiCheckbox('wifi_cd',
                        [
-                         ['value' => '1', 'text' => 'あり'], 
-                         ['value' => '0', 'text' => 'なし'],
+                         ['value' => '1', 'text' => 'あり', 'name' => 'wifi_on'], 
+                         ['value' => '0', 'text' => 'なし', 'name' => 'wifi_off'],
                        ]);
-              ?></nobr></td>
+              ?></td>
         </tr>
+-->
         <tr>
           <td><?= __('電源有無') ?></td>
           <td><?php

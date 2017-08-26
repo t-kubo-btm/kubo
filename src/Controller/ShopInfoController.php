@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\I18n\Time;
 use App\Form\ShopInfoForm;
+use App\Form\ShopInfoSearchForm;
 use Cake\ORM\TableRegistry;
 use Exception;
 
@@ -55,15 +56,15 @@ class ShopInfoController extends AppController
      */
     public function search()
     {
-       /************/
-       /* 初期表示 */
-       /************/
+        /************/
+        /* 初期表示 */
+        /************/
         /* 最寄駅 */
-        $shop_info = $this->ShopInfo->find();
-        $closest_station = $shop_info->select(['closest_station'])
-                   ->distinct(['closest_station'])
-                   ->order(['closest_station' => 'ASC'])
-                   ->toArray();
+        $closest_stations = $this->ShopInfo->find();
+        $closest_station = $closest_stations->select(['closest_station'])
+                         ->distinct(['closest_station'])
+                         ->order(['closest_station' => 'ASC'])
+                         ->toArray();
         $arr_closest_station=[];
         foreach($closest_station as $key => $value){
           $arr_closest_station = $arr_closest_station
@@ -86,75 +87,69 @@ class ShopInfoController extends AppController
         $this->set(compact('arr_create_user'));
         $this->set('_serialize',['arr_create_user']);
 
-/*
-        $this->paginate = [];
-        $shopInfo = $this->paginate($this->ShopInfo);
-        $this->set(compact('shopInfo'));
-        $this->set('_serialize', ['shopInfo']);
-*/
         /************/
         /*   検索   */
         /************/
         if ($this->request->is('post')) {
           if (array_key_exists('search', $this->request->data())) {
+            // バリデーションチェック
+            $shopInfoSearchForm = new ShopInfoSearchForm();
+            $shopInfoSearchForm->validate($this->request->data());
+
+            $this->log($shopInfoSearchForm->errors(), 'debug');
+            if(Empty($shopInfoSearchForm->errors())){
+
 $this->log('----------','debug');
 $this->log($this->request->data(),'debug');
 $this->log($this->request->getData('wifi_cd'),'debug');
-//$this->log($this->request->getData('wifi_cd')[0],'debug');
-//$this->log($this->request->getData('wifi_cd')[1],'debug');
-            $searchInfo = $this->ShopInfo->find();
+              $searchInfo = $this->ShopInfo->find();
 
-            /* 検索条件を設定 */
-            $conditions = [];
-            // WiFi
-           if (!empty($this->request->getData('wifi_cd'))) {
-              // チェックが1つ
-//              $conditions['wifi_cd'] = "IN(".substr(str_repeat(',?',count($this->request->getData('wifi_cd'))),1).")";
-/*
-              if (!empty($this->request->getData('wifi_cd')[0])
-                  and
-                   empty($this->request->getData('wifi_cd')[1])) {
-                $conditions['wifi_cd'] = $this->request->getData('wifi_cd')[0];
-$this->log('チェック1つ','debug');
+              /* 検索条件を設定 */
+              $conditions = [];
+              // WiFi
+              if (!empty($this->request->getData('wifi_cd'))) {
+                $conditions['wifi_cd'] = $this->request->getData('wifi_cd');
+$this->log('wifi_cdあり！','debug');
               }
-              // チェックが2つ
-              if (!empty($this->request->getData('wifi_cd')[0])
-                  and
-                  !empty($this->request->getData('wifi_cd')[1])) {
-                $conditions['wifi_cd in '] = $this->request->getData('wifi_cd')[0]
-                                             . ',' .
-                                             $this->request->getData('wifi_cd')[1];
-$this->log('チェック2つ','debug');
+/*
+              // 最寄駅
+              if (!empty($this->request->getData('closest_station'))) {
+                $conditions['closest_station'] = $this->request->getData('closest_station');
+              }
+              // 徒歩
+              if (!empty($this->request->getData('wail_time'))) {
+                $conditions['waik_time <= '] = $this->request->getData('waik_time');
+              }
+              // 登録者
+              if (!empty($this->request->getData('create_user'))) {
+                $conditions['create_user'] = $this->request->getData('create_user');
+              }
+              // 店名
+              if (!empty($this->request->getData('shop_name'))) {
+                $conditions['shop_name like'] = '%' . $this->request->getData('shop_name') . '%';
               }
 */
-            } 
-            // 最寄駅
-            if (!empty($this->request->getData('closest_station'))) {
-              $conditions['closest_station'] = $this->request->getData('closest_station');
+              /* 検索 */
+              if(!empty($conditions)){
+                //検索条件が指定された場合
+                $search_result = $searchInfo
+                       ->where($conditions)
+                       ->toArray();
+              } else {
+                $search_result = $searchInfo;
+              }
+              $this->set(compact('search_result'));
+              $this->set('_serialize', ['search_result']);
+           } else {
+              // バリデーションチェックエラー時
+              $errors = $shopInfoSearchForm->errors();
+              $this->set(compact('errors'));
+              $this->set('_serialize', ['errors']);
+
+              // エラー時のreturn文
+              $this->Flash->error(__('入力項目を見直してください。エラー：'));
+
             }
-            // 徒歩
-            if (!empty($this->request->getData('wail_time'))) {
-              $conditions['waik_time <= '] = $this->request->getData('waik_time');
-            }
-            // 登録者
-            if (!empty($this->request->getData('create_user'))) {
-              $conditions['create_user'] = $this->request->getData('create_user');
-            }
-            // 店名
-            if (!empty($this->request->getData('shop_name'))) {
-              $conditions['shop_name like'] = '%' . $this->request->getData('shop_name') . '%';
-            }
-            /* 検索 */
-            if(!empty($conditions)){
-              //検索条件が指定された場合
-              $search_result = $searchInfo
-                     ->where($conditions)
-                   ->toArray();
-            } else {
-              $search_result = $searchInfo;
-            }
-            $this->set(compact('search_result'));
-            $this->set('_serialize', ['search_result']);
          } else {
              // 削除処理
          }
@@ -169,6 +164,10 @@ $this->log('チェック2つ','debug');
      */
     public function add()
     {
+        /************/
+        /* 初期表示 */
+        /************/
+        /* 登録者 */
         $create_user = TableRegistry::get('UserMaster');
         $create_users = $create_user->find();
         $users = $create_users->select(['user_name'])
@@ -180,7 +179,6 @@ $this->log('チェック2つ','debug');
         foreach($users as $key => $value){
           $new_users = $new_users + [$value['user_name'] => $value['user_name']];
         }
-        $this->log($new_users, "debug");
         $this->set(compact('new_users'));
         $this->set('_serialize',['new_users']);
 
