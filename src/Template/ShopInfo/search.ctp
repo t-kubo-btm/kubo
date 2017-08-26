@@ -25,15 +25,6 @@
    <div id="regist"> 
      <table class="registration">
         <tr>
-          <td>WiFi</td>
-          <td><p>
-<input type="checkbox" name="wifi_cd" value=“1”>あり
-<input type="checkbox" name="wifi_cd" value=“0”>なし
-<p>
-          </td>
-        </tr>
-<!--
-        <tr>
           <td><?= __('WiFi有無') ?></td>
           <td><?php
                  echo $this->Form->multiCheckbox('wifi_cd',
@@ -43,7 +34,7 @@
                        ]);
               ?></td>
         </tr>
--->
+
         <tr>
           <td><?= __('電源有無') ?></td>
           <td><?php
@@ -75,6 +66,18 @@
                  ?>分
           </td>
         </tr>
+          <?php
+            if(!Empty($errors['waik_time']['format'])){
+          ?>
+          <tr>
+            <td></td>
+            <td id='error_msg'><?php
+                     echo $errors['waik_time']['format'];
+                ?></td>
+          </tr>
+          <?php
+            }
+          ?>
         <tr>
           <td><?= __('登録者') ?></td>
           <td><?php
@@ -170,6 +173,8 @@
     <?php endforeach; ?>
     </table>
     <?php } ?>
+    <?= $this->Form->button(__('削除'), ['name' => 'delete']) ?>
+
 </div>
 
 

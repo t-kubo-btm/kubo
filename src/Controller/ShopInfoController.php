@@ -96,28 +96,28 @@ class ShopInfoController extends AppController
             $shopInfoSearchForm = new ShopInfoSearchForm();
             $shopInfoSearchForm->validate($this->request->data());
 
-            $this->log($shopInfoSearchForm->errors(), 'debug');
             if(Empty($shopInfoSearchForm->errors())){
 
 $this->log('----------','debug');
 $this->log($this->request->data(),'debug');
-$this->log($this->request->getData('wifi_cd'),'debug');
               $searchInfo = $this->ShopInfo->find();
 
               /* 検索条件を設定 */
               $conditions = [];
               // WiFi
               if (!empty($this->request->getData('wifi_cd'))) {
-                $conditions['wifi_cd'] = $this->request->getData('wifi_cd');
-$this->log('wifi_cdあり！','debug');
+                $conditions['wifi_cd in'] = $this->request->getData('wifi_cd');
               }
-/*
+              // 電源
+              if (!empty($this->request->getData('power_supply_cd'))) {
+                $conditions['power_supply_cd in'] = $this->request->getData('power_supply_cd');
+              }
               // 最寄駅
               if (!empty($this->request->getData('closest_station'))) {
                 $conditions['closest_station'] = $this->request->getData('closest_station');
               }
               // 徒歩
-              if (!empty($this->request->getData('wail_time'))) {
+              if (!empty($this->request->getData('waik_time'))) {
                 $conditions['waik_time <= '] = $this->request->getData('waik_time');
               }
               // 登録者
@@ -128,7 +128,6 @@ $this->log('wifi_cdあり！','debug');
               if (!empty($this->request->getData('shop_name'))) {
                 $conditions['shop_name like'] = '%' . $this->request->getData('shop_name') . '%';
               }
-*/
               /* 検索 */
               if(!empty($conditions)){
                 //検索条件が指定された場合
@@ -145,9 +144,9 @@ $this->log('wifi_cdあり！','debug');
               $errors = $shopInfoSearchForm->errors();
               $this->set(compact('errors'));
               $this->set('_serialize', ['errors']);
-
+$this->log($shopInfoSearchForm->errors(),'debug');
               // エラー時のreturn文
-              $this->Flash->error(__('入力項目を見直してください。エラー：'));
+              $this->Flash->error(__('入力項目を見直してください'));
 
             }
          } else {
