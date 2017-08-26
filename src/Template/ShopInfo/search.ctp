@@ -117,8 +117,9 @@
       <tr>
         <td rowspan="5" class="center">
           <div class="checkbox">
-            <label for="categories-aaa" class="selected">
-              <input type="checkbox" name="categories[]" value="" id="delchk_<?php echo $shopInfo['shop_id'] ;?>">
+            <label for="delchk" class="selected">
+              <input type="checkbox" name="delck[]" value="<?php echo $shopInfo['shop_id'] ;?>" 
+id="delchk_<?php echo $shopInfo['shop_id'] ;?>">
             </label>
           </div></td>
         <td colspan="6">

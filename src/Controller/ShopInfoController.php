@@ -87,10 +87,10 @@ class ShopInfoController extends AppController
         $this->set(compact('arr_create_user'));
         $this->set('_serialize',['arr_create_user']);
 
-        /************/
-        /*   検索   */
-        /************/
         if ($this->request->is('post')) {
+          /************/
+          /*   検索   */
+          /************/
           if (array_key_exists('search', $this->request->data())) {
             // バリデーションチェック
             $shopInfoSearchForm = new ShopInfoSearchForm();
@@ -98,8 +98,8 @@ class ShopInfoController extends AppController
 
             if(Empty($shopInfoSearchForm->errors())){
 
-$this->log('----------','debug');
-$this->log($this->request->data(),'debug');
+              $this->log('----------','debug');
+              $this->log($this->request->data(),'debug');
               $searchInfo = $this->ShopInfo->find();
 
               /* 検索条件を設定 */
@@ -144,16 +144,25 @@ $this->log($this->request->data(),'debug');
               $errors = $shopInfoSearchForm->errors();
               $this->set(compact('errors'));
               $this->set('_serialize', ['errors']);
-$this->log($shopInfoSearchForm->errors(),'debug');
+              $this->log($shopInfoSearchForm->errors(),'debug');
               // エラー時のreturn文
               $this->Flash->error(__('入力項目を見直してください'));
-
             }
-         } else {
-             // 削除処理
+         }
+         /************/
+         /*   削除   */
+         /************/
+         else {
+           if(!Empty($this->request->getData('delck'))){
+             $this->request->allowMethod(['post', 'delete']);
+             if ($this->ShopInfo->deleteAll(["shop_id IN" => $this->request->getData('delck')])){ 
+                 $this->Flash->success(__('選択されたデータを削除しました'));
+             } else {
+                 $this->Flash->error(__('削除処理でエラーが発生しました。システム管理者へお問い合わせください'));
+             }
+           }
          }
       }
-
     }
 
     /**
