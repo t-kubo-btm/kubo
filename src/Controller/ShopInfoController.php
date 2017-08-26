@@ -109,6 +109,8 @@ $this->log($this->request->getData('wifi_cd'),'debug');
             // WiFi
            if (!empty($this->request->getData('wifi_cd'))) {
               // チェックが1つ
+//              $conditions['wifi_cd'] = "IN(".substr(str_repeat(',?',count($this->request->getData('wifi_cd'))),1).")";
+/*
               if (!empty($this->request->getData('wifi_cd')[0])
                   and
                    empty($this->request->getData('wifi_cd')[1])) {
@@ -124,6 +126,7 @@ $this->log('チェック1つ','debug');
                                              $this->request->getData('wifi_cd')[1];
 $this->log('チェック2つ','debug');
               }
+*/
             } 
             // 最寄駅
             if (!empty($this->request->getData('closest_station'))) {
@@ -228,7 +231,7 @@ $this->log('チェック2つ','debug');
         $this->set(compact('shopInfo', 'shops'));
         $this->set('_serialize', ['shopInfo']);
         // 検索画面を再表示
-        return $this->redirect(['action' => 'add']);
+//        return $this->redirect(['action' => 'add']);
     }
 
     /**
