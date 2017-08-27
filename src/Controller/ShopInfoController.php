@@ -131,9 +131,13 @@ class ShopInfoController extends AppController
               /* 検索 */
               if(!empty($conditions)){
                 //検索条件が指定された場合
-                $search_result = $searchInfo
-                       ->where($conditions)
-                       ->toArray();
+                try {
+                  $search_result = $searchInfo
+                         ->where($conditions)
+                         ->toArray();
+                } catch (Exception $e) {
+                  $this->Flash->error(__('予期せぬエラーが発生しました。管理者へお問い合わせください'));
+                }
               } else {
                 $search_result = $searchInfo;
               }
@@ -155,10 +159,15 @@ class ShopInfoController extends AppController
          else {
            if(!Empty($this->request->getData('delck'))){
              $this->request->allowMethod(['post', 'delete']);
-             if ($this->ShopInfo->deleteAll(["shop_id IN" => $this->request->getData('delck')])){ 
-                 $this->Flash->success(__('選択されたデータを削除しました'));
-             } else {
-                 $this->Flash->error(__('削除処理でエラーが発生しました。システム管理者へお問い合わせください'));
+             try {
+               if ($this->ShopInfo->deleteAll(["shop_id IN" => $this->request->getData('delck')])){ 
+                   $this->Flash->success(__('選択されたデータを削除しました'));
+               } else {
+                   $this->Flash->error(__('削除処理でエラーが発生しました。システム管理者へお問い合わせください'));
+               }
+             } catch(Exception $e) {
+               $this->Flash->error(__('削除処理でエラーが発生しました。システム管理者へお問い合わ
+せください'));
              }
            }
          }
@@ -220,7 +229,7 @@ class ShopInfoController extends AppController
                   }else{
                       $this->Flash->error(__('予期せぬエラーが発生しました。管理者へお問い合わせください'));
                   }
-                } catch(Exception $e){
+                } catch (Exception $e){
                   // DB保存エラー時のreturn文
                   $this->Flash->error(__('予期せぬエラーが発生しました。管理者へお問い合わせください'));
                 }
@@ -236,8 +245,6 @@ class ShopInfoController extends AppController
         }
         $this->set(compact('shopInfo', 'shops'));
         $this->set('_serialize', ['shopInfo']);
-        // 検索画面を再表示
-//        return $this->redirect(['action' => 'add']);
     }
 
     /**

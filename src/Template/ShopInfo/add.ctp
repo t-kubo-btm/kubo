@@ -24,8 +24,8 @@
       <legend><?= __('登録') ?></legend>
         <table class="registration">
           <tr>
-            <td id='required'><?= __('店名') ?><span id='required_mark'><?= __('*') ?></span></td>
-            <td><?php
+            <td id='table_title'><span id='required'><?= __('店名') ?></span><span id='required_mark'><?= __('*') ?></span></td>
+            <td id='table_input'><?php
                    echo $this->Form->input('shop_name',['label' => false]);
                  ?></td>
           </tr>
@@ -74,8 +74,10 @@
           <tr>
             <td id='required'><?= __('最寄駅') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
-                   echo $this->Form->input('closest_station', ['label'=>false]);
-                  ?></td>
+                   echo $this->Form->input('closest_station',
+                                          ['label' => false,
+                                           'class' => 'is_unit',]);
+                  ?>駅</td>
           </tr>
           <?php
             if(!Empty($errors['closest_station']['length'])){
@@ -92,8 +94,10 @@
           <tr>
             <td id='required'><?= __('徒歩') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php //徒歩
-                   echo $this->Form->input('waik_time', ['label'=>false]);
-                 ?></td>
+                   echo $this->Form->input('waik_time',
+                                          ['label' => false,
+                                           'class' => 'is_unit']);
+                 ?>分</td>
           </tr>
           <?php
             if(!Empty($errors['waik_time']['format'])){
@@ -120,16 +124,14 @@
             }
           ?>
           <tr>
-            <td id='required'><?= __('営業時間（開始）') ?><span id='required_mark'><?= __('*') ?></span></td>
+            <td id='required'><?= __('営業時間') ?><span id='required_mark'><?= __('*') ?></span></td>
             <td><?php
                    echo $this->Form->input('business_hours_from', ['label'=>false]);
-                ?></td>
-          </tr>
-          <tr>
-            <td id='required'><?= __('営業時間（終了）') ?><span id='required_mark'><?= __('*') ?></span></td>
-            <td><?php
+                ?>
+                -
+                <?php
                    echo $this->Form->input('business_hours_to', ['label'=>false]);
-                 ?></td>
+                ?></td>
           </tr>
           <tr>
             <td id='required'><?= __('WiFi有無') ?><span id='required_mark'><?= __('*') ?></span></td>
@@ -155,7 +157,7 @@
           <tr>
             <td><?= __('memo') ?></td>
             <td><?php //メモ
-                   echo $this->Form->input('memo', ['label'=>false]);
+                   echo $this->Form->textarea('memo', ['label'=>false]);
                 ?></td>
           </tr>
           <tr>

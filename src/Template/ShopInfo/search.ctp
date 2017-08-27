@@ -24,9 +24,23 @@
       <legend><?= __('検索') ?></legend>
    <div id="regist"> 
      <table class="registration">
+<!--
         <tr>
-          <td><?= __('WiFi有無') ?></td>
-          <td><?php
+          <td id="table_title"><?= __('WiFi有無') ?></td>
+          <td id="table_input"><?php
+echo $this -> Form -> checkbox ( "wifi_cd", [ "id" => "wifi_cd",
+                                            "value" => "1",
+                                            "hiddenField" => false ] );
+echo $this -> Form -> label ( "wifi_cd", "あり" );
+echo $this -> Form -> checkbox ( "wifi_cd", [ "id" => "wifi_cd",
+                                            "value" => "0" ] );
+echo $this -> Form -> label ( "wifi_cd", "なし" );
+              ?></td>
+        </tr>
+-->
+        <tr>
+          <td id="table_title"><?= __('WiFi有無') ?></td>
+          <td id="table_input"><?php
                  echo $this->Form->multiCheckbox('wifi_cd',
                        [
                          ['value' => '1', 'text' => 'あり', 'name' => 'wifi_on'], 
@@ -61,9 +75,11 @@
         </tr>
         <tr>
           <td><?= __('徒歩') ?></td>
-          <td><?php
-                   echo $this->Form->input('waik_time', ['label' => false]);
-                 ?>分
+          <td><span><?php
+                   echo $this->Form->input('waik_time'
+                                        , ['label' => false,
+                                           'class' => 'is_unit']);
+                 ?>分</span>
           </td>
         </tr>
           <?php

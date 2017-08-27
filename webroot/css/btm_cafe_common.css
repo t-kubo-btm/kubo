@@ -11,7 +11,29 @@ table{
 /*  rules: none; */
   width: 100%;
   margin-bottom: 20px;
-  border: 4px #808080 solid; //外枠表示
+  border: 4px #808080 solid; /*外枠表示*/
+}
+
+/* 列幅指定：項目名 */
+#table_title{
+  width: 30%;
+}
+
+/* 列幅指定：入力項目 */
+#table_input{
+  width: 70%;
+}
+
+/* セレクトボックス */
+select {
+   width: 80%;
+}
+
+/* テキスト:単位あり */
+input.is_unit {
+   width: 80%;
+  display: inline-block;
+  _display: inline;
 }
 
 /* 登録内容入力テーブル */
