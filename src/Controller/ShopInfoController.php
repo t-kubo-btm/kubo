@@ -166,67 +166,81 @@ class ShopInfoController extends AppController
         }
         $this->log("shopnames", "debug");
         $this->log($shopnames, "debug");
-
-        //検索ボタン押下時        
+        $this->log($this->request->data(), "debug");
+        //ボタン押下時        
         if ($this->request->is('post')) {
             $valid_param = $this->request->data();
             
-            $this->log("valid_param", 'debug');
-            $this->log($valid_param, 'debug');
-            if (!empty($valid_param["wifi_cd"])) {
-                foreach ($this->request->data("wifi_cd") as $key => $value) {
-                    $valid_param += ["wifi_cd_" . $key => $value];
+            if (array_key_exists('SEARCH', $valid_param)) {
+                //検索ボタン押下時
+                $this->log("valid_param", 'debug');
+                $this->log($valid_param, 'debug');
+                if (!empty($valid_param["wifi_cd"])) {
+                    foreach ($this->request->data("wifi_cd") as $key => $value) {
+                        $valid_param += ["wifi_cd_" . $key => $value];
+                    }
                 }
-            }
-            
-            if (!empty($valid_param["power_supply_cd"])) {
-                foreach ($this->request->data("power_supply_cd") as $key => $value) {
-                    $valid_param += ["power_supply_cd_" . $key => $value];
-                }
-            }
-            
-            $shopinfoform = new ShopInfoSearchForm();
-            $shopinfoform->validate($valid_param);
 
-            $this->log($this->request->data(), 'debug');
-        if (Empty($shopinfoform->errors)) {
-                $search_result = [];
-                //Free WiFi
-                if(!empty($this->request->data('wifi_cd'))){
-                    $search_result += ["wifi_cd in"=>$this->request->data('wifi_cd')];
+                if (!empty($valid_param["power_supply_cd"])) {
+                    foreach ($this->request->data("power_supply_cd") as $key => $value) {
+                        $valid_param += ["power_supply_cd_" . $key => $value];
+                    }
                 }
-                //電源
-                if(!empty($this->request->data('power_supply_cd'))){
-                    $search_result += ["power_supply_cd in"=>$this->request->data('power_supply_cd')];
+
+                $shopinfoform = new ShopInfoSearchForm();
+                $shopinfoform->validate($valid_param);
+
+                $this->log($this->request->data(), 'debug');
+                if (Empty($shopinfoform->errors)) {
+                    $search_result = [];
+                    //Free WiFi
+                    if(!empty($this->request->data('wifi_cd'))){
+                        $search_result += ["wifi_cd in"=>$this->request->data('wifi_cd')];
+                    }
+                    //電源
+                    if(!empty($this->request->data('power_supply_cd'))){
+                        $search_result += ["power_supply_cd in"=>$this->request->data('power_supply_cd')];
+                    }
+                    //最寄り駅
+                    if(!empty($this->request->data('closest_station'))){
+                        $search_result += ["closest_station in"=>$this->request->data('closest_station')];
+                    }
+                    //駅徒歩
+                    if(!empty($this->request->data('waik_time'))){
+                        array_push($search_result, "waik_time <= ".$this->request->data('waik_time'));
+                    }
+                    //登録者
+                    if(!empty($this->request->data('create_user'))){
+                        $search_result += ["create_user"=>$this->request->data('create_user')];
+                    }
+                    //店名
+                    if(!empty($this->request->data('shop_name'))){
+                        $search_result += ["shop_name"=>$this->request->data('shop_name')];
+                    }
+
+                    $this->log($search_result, "debug");
+                    $shopInfo = $this->ShopInfo->patchEntity($shopInfo, $this->request->data);
+                    $shopinfo = TableRegistry::get("ShopInfo");
+                    $disp_um = $shopinfo->find()
+                        ->where($search_result)
+                        ->toArray();
+                    $this->set(compact('disp_um'));
+                    $this->set('_serialize', ['disp_um']);
                 }
-                //最寄り駅
-                if(!empty($this->request->data('closest_station'))){
-                    $search_result += ["closest_station in"=>$this->request->data('closest_station')];
+            } elseif (array_key_exists('DELETE', $valid_param)) {
+                //削除ボタン押下時
+                foreach ($valid_param["result_check"] as $key => $value) {
+                    if($value == "1"){
+                        $this->request->allowMethod(['post', 'delete']);
+                        $shopInfo = $this->ShopInfo->get($key);
+                        if ($this->ShopInfo->delete($shopInfo)) {
+                            $this->Flash->success(__('The shop info has been deleted.'));
+                        } else {
+                            $this->Flash->error(__('The shop info could not be deleted. Please, try again.'));
+                        }
+                    }
                 }
-                //駅徒歩
-                if(!empty($this->request->data('waik_time'))){
-                    array_push($search_result, "waik_time <= ".$this->request->data('waik_time'));
-}
-                //登録者
-                if(!empty($this->request->data('create_user'))){
-                    $search_result += ["create_user"=>$this->request->data('create_user')];
-                }
-                //店名
-                if(!empty($this->request->data('shop_name'))){
-                    $search_result += ["shop_name"=>$this->request->data('shop_name')];
-                }
-                
-                $this->log($search_result, "debug");
-                $shopInfo = $this->ShopInfo->patchEntity($shopInfo, $this->request->data);
-                $shopinfo = TableRegistry::get("ShopInfo");
-                $disp_um = $shopinfo->find()
-                    ->where($search_result)
-                    ->toArray();
-                $this->set(compact('disp_um'));
-                $this->set('_serialize', ['disp_um']);
-                
             }
-//            $this->Flash->error(__('The shop info could not be saved. Please, try again.'));
         }
 //        $shops = $this->ShopInfo->Shops->find('list', ['limit' => 200]);
         $this->set(compact('shopInfo', 'disp'));

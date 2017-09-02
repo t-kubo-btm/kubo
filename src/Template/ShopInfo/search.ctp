@@ -3,6 +3,8 @@
   * @var \App\View\AppView $this
   */
 ?>
+<script type="text/javascript" src="../webroot/js/search.js"></script>
+
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -11,7 +13,7 @@
 </nav>
 <div class="shopInfo index large-9 medium-8 columns content">
     <h3><?= __('検索') ?></h3>
-    <?= $this->Form->create("", ['controller' => 'ShopInfo', 'url' => '/ShopInfo/search', 'type' => 'post']) ?>
+    <?= $this->Form->create("", ['controller' => 'ShopInfo', 'url' => '/ShopInfo/search', 'type' => 'post', 'name' => 'result_disp']) ?>
     <table><tr>
     <th class="midasi">Free WiFi</th>
     <td><?= $this->Form->multicheckbox('wifi_cd',[
@@ -40,15 +42,21 @@
     
     <div class="parent">
         <div class="inner">
-            <?= $this->Form->button(__('検索')) ?>
+            <?= $this->Form->button(__('検索'), ["name" => "SEARCH"]) ?>
         </div>
     </div>
     
     <?php if(!Empty($disp_um)){ ?>
+        <?php
+            $cnt = count($disp_um);
+            echo "<div>検索結果：".$cnt."件</div>";
+        ?>
+        <?php $num = 0 ?>
         <?php foreach ($disp_um as $disp_um): ?>
             <table><tr>
                 <td rowspan="5">
-                  <?= $this->Form->checkbox('result_check') ?>
+                    <?= $this->Form->checkbox("result_check[$disp_um->shop_id]", ["id" => "ck".$num]) ?>
+                    <?php $num += 1 ?>
                 </td>
                 <td colspan="6"><a href="<?= h($disp_um->shop_url) ?>" target=blank>
             <?= h($disp_um->shop_name) ?></a></td>
@@ -74,7 +82,8 @@
             </tr></table>
 
         <?php endforeach; ?>
+        <?= $this->Form->button(__('削除'), ["name" => "DELETE", "onclick" => "return del_chk($cnt)"]) ?>
     <?php } ?>
-</div>
     <?= $this->Form->end() ?>
+</div>
 
